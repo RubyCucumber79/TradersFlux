@@ -9,3 +9,4 @@ panel
 pandas
 numpy
 Jinja2
+openpyxl
