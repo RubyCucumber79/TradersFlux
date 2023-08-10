@@ -14,7 +14,8 @@ import plotly.graph_objs as go
 hv.extension('bokeh')
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///manager.db"
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
+#postgres://tradersflux_user:UTa17vRY4vO27XRzA4ecwfHiotHnQwjh@dpg-cjad2eue546c738a4570-a.singapore-postgres.render.com/tradersflux
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 socketio = SocketIO(app)
