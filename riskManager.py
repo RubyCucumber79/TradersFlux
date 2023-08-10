@@ -1,5 +1,5 @@
 from model import *
-from app import *
+from main import *
 
 
 risk_tolerance = 0.02  # 2% risk tolerance

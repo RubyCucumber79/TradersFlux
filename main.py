@@ -13,12 +13,11 @@ import plotly.graph_objs as go
 
 hv.extension('bokeh')
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
-#postgres://tradersflux_user:UTa17vRY4vO27XRzA4ecwfHiotHnQwjh@dpg-cjad2eue546c738a4570-a.singapore-postgres.render.com/tradersflux
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
-socketio = SocketIO(app)
+main = Flask(__name__)
+main.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///manager.db"
+main.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(main)
+socketio = SocketIO(main)
 
 class riskM(db.Model):
     sno = db.Column(db.Integer,primary_key=True)
@@ -42,7 +41,7 @@ class riskM(db.Model):
     def __repr__(self)->str:
         return f"{self.sno} - {self.entryPrice} - {self.takeProfit} - {self.stopLoss} -  {self.comission} -{self.swap} -{self.riskTollerance} - {self.positionSize} -{self.riskExposure} -{self.riskRewardRatio} - {self.senarioAExitPrice} - {self.senarioAGrossProfit} - {self.senarioANetProfit} -{self.senarioBExitPrice} - {self.senarioBGrossLoss} - {self.senarioBNetLoss}"
         #{self.volume} -
-@app.route('/',methods=['GET','POST'])
+@main.route('/',methods=['GET','POST'])
 def hello_world():
     pie_chart_html = "" 
     ratio_figure_html= ""
@@ -99,7 +98,7 @@ def hello_world():
         fig = px.pie(pie_chart_data, values='Value', names='Category',title='Risk Exposure vs Total Capital', width=400, height=400)
         # Save the pie chart as an HTML file
         pie_chart_html = fig.to_html(include_plotlyjs=False, full_html=False)
-        file_path = os.path.join(app.root_path, 'static', 'pieChart.html')
+        file_path = os.path.join(main.root_path, 'static', 'pieChart.html')
         with open(file_path, 'w') as file:
             file.write(pie_chart_html)
             
@@ -117,7 +116,7 @@ def hello_world():
         # Convert the figure to HTML
         bar_graph_html = pio.to_html(fig, include_plotlyjs='cdn')
         # Define the file path within the static folder
-        file_path = os.path.join(app.root_path, 'static', 'bar_graph.html')
+        file_path = os.path.join(main.root_path, 'static', 'bar_graph.html')
         # Write the HTML to the file
         with open(file_path, 'w') as file:
             file.write(bar_graph_html)
@@ -152,7 +151,7 @@ def hello_world():
 
         
         # Define the file path within the static folder
-        scatter_file_path = os.path.join(app.root_path, 'static', 'scatter_plot.html')
+        scatter_file_path = os.path.join(main.root_path, 'static', 'scatter_plot.html')
 
         # Save the scatter plot to the file
         hv.save(scatter_plot, scatter_file_path)
@@ -177,13 +176,13 @@ def hello_world():
     allRisk = riskM.query.all()
     return render_template('index.html',allRisk=allRisk, pie_chart_html=pie_chart_html, ratio_figure_html=ratio_figure_html  )
 
-@app.route('/show')
+@main.route('/show')
 def products():
     allRisk = riskM.query.all()
     print(allRisk)
     return 'this is products page'
 
-@app.route('/delete/<int:sno>')
+@main.route('/delete/<int:sno>')
 def delete(sno):
     risk = riskM.query.filter_by(sno=sno).first()
     db.session.delete(risk)
@@ -192,7 +191,7 @@ def delete(sno):
 
 
 if __name__=="__main__":
-    app.run()
+    main.run(debug=True)
 
 
  
