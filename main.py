@@ -2,10 +2,10 @@ from flask import Flask,render_template,request,redirect
 from flask_sqlalchemy import SQLAlchemy
 import plotly.express as px
 import plotly.io as pio
-from flask_socketio import SocketIO, emit
+#from flask_socketio import SocketIO, emit
 from model import *
 import os
-import hvplot.pandas  
+#import hvplot.pandas  
 import pandas as pd
 import holoviews as hv
 from holoviews import opts
@@ -17,7 +17,7 @@ main = Flask(__name__)
 main.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///manager.db"
 main.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(main)
-socketio = SocketIO(main)
+#socketio = SocketIO(main)
 
 class riskM(db.Model):
     sno = db.Column(db.Integer,primary_key=True)

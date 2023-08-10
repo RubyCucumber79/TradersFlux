@@ -1,0 +1,11 @@
+flask
+holoviews
+bokeh
+Flask-SQLAlchemy
+scikit-learn
+requests
+plotly
+panel
+pandas
+numpy
+Jinja2
