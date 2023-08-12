@@ -61,7 +61,7 @@ def hello_world():
         entry_price = entryPrice
         take_profit = takeProfit
         stop_loss = stopLoss
-        Volume = position_size
+        Volume = position_size*1000
         commission = comission
         Swap = swap
         
@@ -69,7 +69,7 @@ def hello_world():
         potential_loss = model_loss.predict([[entry_price, stop_loss, take_profit]])[0]
         
         # Calculate risk exposure based on position size
-        risk_exposure = position_size * entry_price #* Volume
+        risk_exposure = position_size * entry_price * Volume
         
         # Calculate risk-reward ratio
         risk_reward_ratio = potential_profit / potential_loss
@@ -77,16 +77,16 @@ def hello_world():
         
         # Initialize variables net_profit_a and net_loss_b
         
-        net_profit_a = 0
-        net_loss_b = 0
+        net_profit_a = potential_profit - risk_exposure
+        net_loss_b = risk_exposure - potential_loss
         
         # Scenario A (Take Profit is Hit)
-        if potential_profit >= risk_exposure:
-            net_profit_a = potential_profit - risk_exposure
+        #if potential_profit >= risk_exposure:
+        #    net_profit_a = potential_profit - risk_exposure
         
         # Scenario B (Stop Loss is Hit)
-        if potential_loss <= risk_exposure:
-            net_loss_b = risk_exposure - potential_loss
+        #if potential_loss <= risk_exposure:
+        #    net_loss_b = risk_exposure - potential_loss
         #pie chart simulation
         
         totalCapital = risk_exposure / risk_tolerance
