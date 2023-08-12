@@ -1,4 +1,4 @@
-# My Awesome Project
+# TradersFlux
 
 Welcome to my project! This is a brief description of what the project does.
 
